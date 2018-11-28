@@ -3,3 +3,5 @@
 /src/main/java/com/soyu/util/header.txt
 /LN-HouTai.iml.iml
 /.idea/
+/src/main/resources/dbconfig.properties
+/src/main/resources/dbfh.properties
