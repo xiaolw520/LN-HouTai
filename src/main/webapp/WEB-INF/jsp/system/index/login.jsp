@@ -71,11 +71,11 @@
 </head>
 <body>
 
-	<c:if test="${pd.isMusic == 'yes' }">
+	<%--<c:if test="${pd.isMusic == 'yes' }">
 	<div style="display: none">
 	    <audio src="static/login/music/fh1.mp3" autoplay=""></audio>
 	</div>	
-	</c:if>
+	</c:if>--%>
 	<canvas class="cavs"></canvas>
 	<div style="width:100%;text-align: center;margin: 0 auto;position: absolute;">
 		<!-- 登录 -->

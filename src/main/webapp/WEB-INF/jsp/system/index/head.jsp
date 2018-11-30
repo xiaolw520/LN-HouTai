@@ -32,7 +32,7 @@
 				<!-- #section:basics/navbar.dropdown -->
 				<div class="navbar-buttons navbar-header pull-right" role="navigation">
 					<ul class="nav ace-nav">
-						<li class="grey">
+						<%--<li class="grey">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="ace-icon fa fa-tasks"></i>
 								<span class="badge badge-grey">2</span>
@@ -71,7 +71,7 @@
 								<i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
 								<span class="badge badge-success" id="fhsmsCount"></span>
 							</a>
-						</li>
+						</li>--%>
 
 						<!-- #section:basics/navbar.user_menu -->
 						<li class="light-blue">
