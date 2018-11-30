@@ -145,22 +145,22 @@ public class CreateCodeController extends BaseController {
 			ftlPath = "createSoCode";	//明细表
 		}
 		/*生成controller*/
-		Freemarker.printFile("controllerTemplate_ln.ftl", root, "controller/"+packageName+"/"+objectName.toLowerCase()+"/"+objectName+"Controller.java", filePath, ftlPath);
+		Freemarker.printFile("controllerTemplate_ln.ftl", root, "controller/"+packageName+"/"+objectName+"Controller.java", filePath, ftlPath);
 		/*生成service*/
-		Freemarker.printFile("serviceTemplate_ln.ftl", root, "service/"+packageName+"/"+objectName.toLowerCase()+"/impl/"+objectName+"Service.java", filePath, ftlPath);
+		Freemarker.printFile("serviceTemplate_ln.ftl", root, "service/"+packageName+"/impl/"+objectName+"Service.java", filePath, ftlPath);
 		/*生成manager*/
-		Freemarker.printFile("managerTemplate_ln.ftl", root, "service/"+packageName+"/"+objectName.toLowerCase()+"/"+objectName+"Manager.java", filePath, ftlPath);
+		Freemarker.printFile("managerTemplate_ln.ftl", root, "service/"+packageName+"/"+objectName+"Manager.java", filePath, ftlPath);
 		/*生成mybatis xml*/
-		Freemarker.printFile("mapperMysqlTemplate.ftl", root, "mybatis_mysql/"+packageName+"/"+objectName+"Mapper.xml", filePath, ftlPath);
+		Freemarker.printFile("mapperMysqlTemplate_ln.ftl", root, "mybatis_mysql/"+"ln"+"/"+objectName+"Mapper.xml", filePath, ftlPath);
 //		Freemarker.printFile("mapperOracleTemplate.ftl", root, "mybatis_oracle/"+packageName+"/"+objectName+"Mapper.xml", filePath, ftlPath);
 //		Freemarker.printFile("mapperSqlserverTemplate.ftl", root, "mybatis_sqlserver/"+packageName+"/"+objectName+"Mapper.xml", filePath, ftlPath);
 		/*生成SQL脚本*/
-		Freemarker.printFile("mysql_SQL_Template.ftl", root, "mysql数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
+//		Freemarker.printFile("mysql_SQL_Template.ftl", root, "mysql数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
 //		Freemarker.printFile("oracle_SQL_Template.ftl", root, "oracle数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
 //		Freemarker.printFile("sqlserver_SQL_Template.ftl", root, "sqlserver数据库脚本/"+tabletop+objectName.toUpperCase()+".sql", filePath, ftlPath);
 		/*生成jsp页面*/
-		Freemarker.printFile("jsp_list_Template.ftl", root, "jsp/ln/"+packageName+"/"+objectName.toLowerCase()+"/"+objectName.toLowerCase()+"_list.jsp", filePath, ftlPath);
-		Freemarker.printFile("jsp_edit_Template.ftl", root, "jsp/ln/"+packageName+"/"+objectName.toLowerCase()+"/"+objectName.toLowerCase()+"_edit.jsp", filePath, ftlPath);
+		Freemarker.printFile("jsp_list_Template.ftl", root, "jsp/ln/"+packageName+"/"+objectName.toLowerCase()+"_list.jsp", filePath, ftlPath);
+		Freemarker.printFile("jsp_edit_Template.ftl", root, "jsp/ln/"+packageName+"/"+objectName.toLowerCase()+"_edit.jsp", filePath, ftlPath);
 		/*生成说明文档*/
 		Freemarker.printFile("docTemplate.ftl", root, "部署说明.doc", filePath, ftlPath);
 		//this.print("oracle_SQL_Template.ftl", root);  控制台打印

@@ -33,7 +33,7 @@ setTimeout("top.hangge()",500);
 					<div class="row">
 						<div class="col-xs-12">
 
-							<div class="alert alert-block alert-success">
+							<%--<div class="alert alert-block alert-success">
 								<button type="button" class="close" data-dismiss="alert">
 									<i class="ace-icon fa fa-times"></i>
 								</button>
@@ -43,7 +43,7 @@ setTimeout("top.hangge()",500);
 									&nbsp;QQ:313596790
 									<a href="http://www.fhadmin.org" target="_blank"><small>(&nbsp;www.fhadmin.org&nbsp;)</small></a>
 								</strong>
-							</div>
+							</div>--%>
 							
 							
 							<div id="main" style="width: 600px;height:300px;"></div>
@@ -54,7 +54,7 @@ setTimeout("top.hangge()",500);
 						        // 指定图表的配置项和数据
 								var option = {
 						            title: {
-						                text: 'FH Admin用户统计'
+						                text: '用户统计'
 						            },
 						            tooltip: {},
 						            xAxis: {
