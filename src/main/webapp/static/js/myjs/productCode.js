@@ -182,7 +182,7 @@ $(function(){if('createCode'== locat[3]){locat =  locat[0]+'//'+locat[2];}else{l
 			$("#dname").focus();
 			return false;
 		}else{
-			dname = dname.toUpperCase();		//转化为大写
+			//dname = dname.toUpperCase();		//转化为大写
 			if(isSame(dname)){
 				var headstr = dname.substring(0,1);
 				var pat = new RegExp("^[0-9]+$");
