@@ -1,9 +1,9 @@
-package com.ln.service.department.impl;
+package com.ln.service.dept.impl;
 
 import java.util.List;
 import javax.annotation.Resource;
 
-import com.ln.service.department.DepartmentManager;
+import com.ln.service.dept.DeptManager;
 import org.springframework.stereotype.Service;
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
@@ -15,8 +15,8 @@ import com.fh.util.PageData;
  * 创建时间：2018-11-30
  * @version
  */
-@Service("departmentService")
-public class DepartmentService implements DepartmentManager {
+@Service("deptService")
+public class DeptService implements DeptManager {
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -26,7 +26,7 @@ public class DepartmentService implements DepartmentManager {
 	 * @throws Exception
 	 */
 	public void save(PageData pd)throws Exception{
-		dao.save("DepartmentMapper.save", pd);
+		dao.save("DeptMapper.save", pd);
 	}
 	
 	/**删除
@@ -34,7 +34,7 @@ public class DepartmentService implements DepartmentManager {
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception{
-		dao.delete("DepartmentMapper.delete", pd);
+		dao.delete("DeptMapper.delete", pd);
 	}
 	
 	/**修改
@@ -42,7 +42,7 @@ public class DepartmentService implements DepartmentManager {
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception{
-		dao.update("DepartmentMapper.edit", pd);
+		dao.update("DeptMapper.edit", pd);
 	}
 	
 	/**列表
@@ -51,7 +51,7 @@ public class DepartmentService implements DepartmentManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("DepartmentMapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("DeptMapper.datalistPage", page);
 	}
 	
 	/**列表(全部)
@@ -60,7 +60,7 @@ public class DepartmentService implements DepartmentManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("DepartmentMapper.listAll", pd);
+		return (List<PageData>)dao.findForList("DeptMapper.listAll", pd);
 	}
 	
 	/**通过id获取数据
@@ -68,7 +68,7 @@ public class DepartmentService implements DepartmentManager {
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("DepartmentMapper.findById", pd);
+		return (PageData)dao.findForObject("DeptMapper.findById", pd);
 	}
 	
 	/**批量删除
@@ -76,7 +76,7 @@ public class DepartmentService implements DepartmentManager {
 	 * @throws Exception
 	 */
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
-		dao.delete("DepartmentMapper.deleteAll", ArrayDATA_IDS);
+		dao.delete("DeptMapper.deleteAll", ArrayDATA_IDS);
 	}
 	
 }

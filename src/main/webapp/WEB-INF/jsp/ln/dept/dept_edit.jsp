@@ -27,8 +27,8 @@
 				<div class="row">
 					<div class="col-xs-12">
 					
-					<form action="department/${msg }.do" name="Form" id="Form" method="post">
-						<input type="hidden" name="DEPARTMENT_ID" id="DEPARTMENT_ID" value="${pd.DEPARTMENT_ID}"/>
+					<form action="dept/${msg }.do" name="Form" id="Form" method="post">
+						<input type="hidden" name="DEPT_ID" id="DEPT_ID" value="${pd.DEPT_ID}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>

@@ -1,4 +1,4 @@
-package com.ln.service.department;
+package com.ln.service.dept;
 
 import java.util.List;
 import com.fh.entity.Page;
@@ -10,7 +10,7 @@ import com.fh.util.PageData;
  * 创建时间：2018-11-30
  * @version
  */
-public interface DepartmentManager{
+public interface DeptManager {
 
 	/**新增
 	 * @param pd

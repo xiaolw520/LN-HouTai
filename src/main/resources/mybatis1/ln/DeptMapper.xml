@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="DepartmentMapper">
+<mapper namespace="DeptMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		T_DEPARTMENT
+		t_dept
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		REFID,	
-		REFTYPE,	
-		NAME,	
-		DESC,	
-		CRTIME,	
-		UPTIME,	
-		ISDEL,	
-		STATE,	
-		departmentid
+		refid,
+		reftype,
+		name,
+		info,
+		crtime,
+		uptime,
+		isdel,
+		state,
+		deptid
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{REFID},	
-		#{REFTYPE},	
-		#{NAME},	
-		#{DESC},	
-		#{CRTIME},	
-		#{UPTIME},	
-		#{ISDEL},	
-		#{STATE},	
-		#{departmentid}
+		#{refid},
+		#{reftype},
+		#{name},
+		#{info},
+		#{crtime},
+		#{uptime},
+		#{isdel},
+		#{state},
+		#{deptid}
 	</sql>
 	
 	<!-- 新增-->
@@ -49,42 +49,42 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			departmentid = #{departmentid}
+			deptid = #{deptid}
 	</delete>
-
+	
 	<!-- 修改 -->
 	<update id="edit" parameterType="pd">
 		update
 		<include refid="tableName"></include>
-		set
-			REFID = #{REFID},
-			REFTYPE = #{REFTYPE},
-			NAME = #{NAME},
-			DESC = #{DESC},
-			CRTIME = #{CRTIME},
-			UPTIME = #{UPTIME},
-			ISDEL = #{ISDEL},
-			STATE = #{STATE},
-		departmentid = departmentid
-		where
-		departmentid = #{departmentid}
+		set 
+			refid = #{refid},
+			reftype = #{reftype},
+			name = #{name},
+			info = #{info},
+			crtime = #{crtime},
+			uptime = #{uptime},
+			isdel = #{isdel},
+			state = #{state},
+		deptid = deptid
+		where 
+		deptid = #{deptid}
 	</update>
-
+	
 	<!-- 通过ID获取数据 -->
 	<select id="findById" parameterType="pd" resultType="pd">
-		select
+		select 
 		<include refid="Field"></include>
-		from
+		from 
 		<include refid="tableName"></include>
-		where
-			departmentid = #{departmentid}
+		where 
+			deptid = #{deptid}
 	</select>
-
+	
 	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select
 		<include refid="Field"></include>
-		from
+		from 
 		<include refid="tableName"></include>
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
@@ -92,31 +92,30 @@
 				(
 				<!--	根据需求自己加检索条件
 					字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-					 or
-					字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
 				-->
 				)
 		</if>
 	</select>
-
+	
 	<!-- 列表(全部) -->
 	<select id="listAll" parameterType="pd" resultType="pd">
 		select
 		<include refid="Field"></include>
-		from
+		from 
 		<include refid="tableName"></include>
 	</select>
-
+	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
 		delete from
 		<include refid="tableName"></include>
-		where
-			departmentid in
+		where 
+			deptid in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>
 	</delete>
 	
-	<!-- fh313596790qq(青苔) -->
 </mapper>

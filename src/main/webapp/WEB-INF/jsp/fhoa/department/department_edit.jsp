@@ -149,7 +149,7 @@
 			if("" == BIANMA)return;
 			$.ajax({
 				type: "POST",
-				url: '<%=basePath%>department/hasBianma.do',
+				url: '<%=basePath%>dept/hasBianma.do',
 		    	data: {BIANMA:BIANMA,tm:new Date().getTime()},
 				dataType:'json',
 				cache: false,

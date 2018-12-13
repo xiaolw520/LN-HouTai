@@ -1,4 +1,4 @@
-package com.ln.service.${packageName}.${objectNameLower};
+package com.ln.service.${packageName};
 
 import java.util.List;
 import com.fh.entity.Page;

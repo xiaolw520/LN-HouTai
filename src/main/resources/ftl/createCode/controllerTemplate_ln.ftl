@@ -1,4 +1,4 @@
-package com.ln.controller.${packageName}.${objectNameLower};
+package com.ln.controller.${packageName};
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -23,7 +23,7 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.ln.service.${packageName}.${objectNameLower}.${objectName}Manager;
+import com.ln.service.${packageName}.${objectName}Manager;
 
 /** 
  * 说明：${TITLE}
@@ -49,7 +49,11 @@ public class ${objectName}Controller extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("${objectNameUpper}_ID", this.get32UUID());	//主键
+		pd.put("reftype", (byte) 1);
+		pd.put("isdel",false);
+		pd.put("state",0);
+		pd.put("${objectNameLower}id", this.get36UUID());	//主键
+		pd.put("uptime", pd.get("crtime").toString());//设置修改时间
 <#list fieldList as var>
 	<#if var[3] == "否">
 		<#if var[1] == 'Date'>

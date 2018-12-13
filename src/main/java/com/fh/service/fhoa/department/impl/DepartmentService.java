@@ -95,7 +95,7 @@ public class DepartmentService implements DepartmentManager{
 	public List<Department> listAllDepartment(String parentId) throws Exception {
 		List<Department> departmentList = this.listSubDepartmentByParentId(parentId);
 		for(Department depar : departmentList){
-			depar.setTreeurl("department/list.do?DEPARTMENT_ID="+depar.getDEPARTMENT_ID());
+			depar.setTreeurl("dept/list.do?DEPARTMENT_ID="+depar.getDEPARTMENT_ID());
 			depar.setSubDepartment(this.listAllDepartment(depar.getDEPARTMENT_ID()));
 			depar.setTarget("treeFrame");
 			depar.setIcon("static/images/user.gif");

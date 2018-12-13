@@ -21,16 +21,18 @@
 	<context:component-scan base-package="com.fh">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	
+	<context:component-scan base-package="com.ln">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 	
 	<!-- 读取参数配置 -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
 		<property name="locations">  
-			<list>  
-                 <value>/WEB-INF/classes/dbconfig.properties</value>
-                 <value>/WEB-INF/classes/redis.properties</value>  
-            </list>  
+			<list>
+				<value>/WEB-INF/classes/dbconfig.properties</value>
+				<value>/WEB-INF/classes/redis.properties</value>
+			</list>
         </property>  
 	</bean> 
    

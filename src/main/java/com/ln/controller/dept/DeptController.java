@@ -1,4 +1,4 @@
-package com.ln.controller.department;
+package com.ln.controller.dept;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -22,20 +22,21 @@ import com.fh.util.AppUtil;
 import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
-import com.ln.service.department.DepartmentManager;
+import com.fh.util.Tools;
+import com.ln.service.dept.DeptManager;
 
 /** 
  * 说明：院系
  * 创建人：xiaolw Q76114567
- * 创建时间：2018-11-30
+ * 创建时间：2018-12-13
  */
 @Controller
-@RequestMapping(value="/department")
-public class DepartmentController extends BaseController {
+@RequestMapping(value="/dept")
+public class DeptController extends BaseController {
 	
-	String menuUrl = "department/list.do"; //菜单地址(权限用)
-	@Resource(name="departmentService")
-	private DepartmentManager departmentService;
+	String menuUrl = "dept/list.do"; //菜单地址(权限用)
+	@Resource(name="deptService")
+	private DeptManager deptService;
 	
 	/**保存
 	 * @param
@@ -43,13 +44,17 @@ public class DepartmentController extends BaseController {
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Department");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Dept");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("DEPARTMENT_ID", this.get32UUID());	//主键
-		departmentService.save(pd);
+		pd.put("deptid", this.get32UUID());	//主键
+		pd.put("reftype", (byte) 1);
+		pd.put("isdel",false);
+		pd.put("state",0);
+		pd.put("uptime", pd.get("crtime").toString());//设置修改时间
+		deptService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -61,11 +66,11 @@ public class DepartmentController extends BaseController {
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Department");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Dept");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		departmentService.delete(pd);
+		deptService.delete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -76,12 +81,12 @@ public class DepartmentController extends BaseController {
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Department");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Dept");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		departmentService.edit(pd);
+		deptService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
@@ -93,7 +98,7 @@ public class DepartmentController extends BaseController {
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Department");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Dept");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -103,8 +108,8 @@ public class DepartmentController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = departmentService.list(page);	//列出Department列表
-		mv.setViewName("ln/department/department_list");
+		List<PageData>	varList = deptService.list(page);	//列出Dept列表
+		mv.setViewName("ln/dept/dept_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
@@ -120,7 +125,7 @@ public class DepartmentController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		mv.setViewName("ln/department/department_edit");
+		mv.setViewName("ln/dept/dept_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
 		return mv;
@@ -135,8 +140,8 @@ public class DepartmentController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = departmentService.findById(pd);	//根据ID读取
-		mv.setViewName("ln/department/department_edit");
+		pd = deptService.findById(pd);	//根据ID读取
+		mv.setViewName("ln/dept/dept_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -149,7 +154,7 @@ public class DepartmentController extends BaseController {
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Department");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Dept");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();		
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -158,7 +163,7 @@ public class DepartmentController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			departmentService.deleteAll(ArrayDATA_IDS);
+			deptService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -174,7 +179,7 @@ public class DepartmentController extends BaseController {
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Department到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Dept到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
@@ -190,7 +195,7 @@ public class DepartmentController extends BaseController {
 		titles.add("软删除");	//7
 		titles.add("状态");	//8
 		dataMap.put("titles", titles);
-		List<PageData> varOList = departmentService.listAll(pd);
+		List<PageData> varOList = deptService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();

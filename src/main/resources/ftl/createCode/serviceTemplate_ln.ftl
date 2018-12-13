@@ -1,4 +1,4 @@
-package com.ln.service.${packageName}.${objectNameLower}.impl;
+package com.ln.service.${packageName}.impl;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
-import com.ln.service.${packageName}.${objectNameLower}.${objectName}Manager;
+import com.ln.service.${packageName}.${objectName}Manager;
 
 /** 
  * 说明： ${TITLE}
