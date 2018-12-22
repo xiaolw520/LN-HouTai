@@ -51,7 +51,7 @@
 									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">图片名称</th>
-									<th class="center">图片地址</th>
+									<th class="center">图片</th>
 									<th class="center">跳转地址</th>
 									<th class="center">创建时间</th>
 									<th class="center">更新时间</th>
@@ -72,7 +72,10 @@
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.name}</td>
-											<td class='center' style=" word-break: break-all;">${var.imgUrl}</td>
+											<td class="center">
+												<a href="<%=basePath%>${var.imgUrl}"  class="bwGal">
+													<img src="<%=basePath%>${var.imgUrl}"  width="100"/></a>
+											</td>
 											<td class='center'  style=" word-break: break-all;">${var.href}</td>
 											<td class='center'><fmt:formatDate value="${var.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 											<td class='center'><fmt:formatDate value="${var.uptime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

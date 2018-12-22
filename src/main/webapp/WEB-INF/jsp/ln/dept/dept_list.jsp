@@ -68,7 +68,7 @@
 									</th>
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">院系名称</th>
-									<%--<th class="center">简介</th>--%>
+									<th class="center">图片</th>
 									<th class="center">颜色</th>
 									<th class="center">排序</th>
 									<th class="center">创建时间</th>
@@ -91,7 +91,10 @@
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											
 											<td class='center'>${var.name}</td>
-											<%--<td class='center'>${var.info}</td>--%>
+											<td class="center">
+												<a href="<%=basePath%>${var.imgUrl}"  class="bwGal">
+													<img src="<%=basePath%>${var.imgUrl}"  width="100"/></a>
+											</td>
 											<td class='center'>${var.color}</td>
 											<td class='center'>${var.sort}</td>
 											<td class='center'><fmt:formatDate value="${var.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>

@@ -16,8 +16,8 @@
 		uptime,	
 		isdel,	
 		state,	
-		sort,	
-		imgUrl,	
+		sort,
+		imgUrl,
 		deptinfoid
 	</sql>
 	
@@ -30,8 +30,8 @@
 		#{uptime},	
 		#{isdel},	
 		#{state},	
-		#{sort},	
-		#{imgUrl},	
+		#{sort},
+		#{imgUrl},
 		#{deptinfoid}
 	</sql>
 	
@@ -59,17 +59,12 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			refid = #{refid},
-			reftype = #{reftype},
+
 			info = #{info},
-			crtime = #{crtime},
 			uptime = #{uptime},
-			isdel = #{isdel},
-			state = #{state},
 			sort = #{sort},
-			imgUrl = #{imgUrl},
-		deptinfoid = deptinfoid
-		where 
+			imgUrl = #{imgUrl}
+		where
 		deptinfoid = #{deptinfoid}
 	</update>
 	

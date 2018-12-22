@@ -16,6 +16,14 @@
 	<%@ include file="../../system/index/top.jsp"%>
 	<!-- 日期框 -->
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
+		<style type="text/css">
+			.yulantu{
+				z-index: 9999999999999999;
+				position:absolute;
+				border:2px solid #76ACCD;
+				display: none;
+			}
+		</style>
 </head>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
@@ -47,31 +55,23 @@
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">文字:</td>
-								<td><input type="text" name="info" id="info" value="${pd.info}" maxlength="255" placeholder="这里输入文字" title="文字" style="width:98%;"/></td>
+								<td><textarea type="text" name="info" id="info" value="${pd.info}" maxlength="255" placeholder="这里输入文字" title="文字" style="width:98%;">${pd.info}</textarea></td>
 							</tr>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">创建时间:</td>
-								<td><input class="span10 date-picker" name="crtime" id="crtime" value="${pd.crtime}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="创建时间" title="创建时间" style="width:98%;"/></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">更新时间:</td>
-								<td><input class="span10 date-picker" name="uptime" id="uptime" value="${pd.uptime}" type="text" data-date-format="yyyy-mm-dd" readonly="readonly" placeholder="更新时间" title="更新时间" style="width:98%;"/></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">软删除:</td>
-								<td><input type="number" name="isdel" id="isdel" value="${pd.isdel}" maxlength="32" placeholder="这里输入软删除" title="软删除" style="width:98%;"/></td>
-							</tr>
-							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">状态:</td>
-								<td><input type="number" name="state" id="state" value="${pd.state}" maxlength="32" placeholder="这里输入状态" title="状态" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">图片地址:</td>
+								<td><input type="text" name="imgUrl" id="imgUrl" value="${pd.imgUrl}" maxlength="100" placeholder="图片地址" title="图片地址" style="width:86%;" onmouseover="showTU('imgUrl','yulantu');" onmouseout="hideTU('yulantu');"/>
+									<div class="yulantu" id="yulantu"></div>
+									<a class="btn btn-xs btn-info" style="margin-top: -5px;" title="选择" onclick="xuanTp('imgUrl');">选择 </a>
+								</td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">排序:</td>
 								<td><input type="number" name="sort" id="sort" value="${pd.sort}" maxlength="32" placeholder="这里输入排序" title="排序" style="width:98%;"/></td>
 							</tr>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">图片地址:</td>
-								<td><input type="text" name="imgUrl" id="imgUrl" value="${pd.imgUrl}" maxlength="255" placeholder="这里输入图片地址" title="图片地址" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">创建时间:</td>
+								<input name="crtime" value="<fmt:formatDate value="${pd.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/>" type="hidden"/>
+								<td><fmt:formatDate value="${pd.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							</tr>
 							<tr>
 								<td style="text-align: center;" colspan="10">
@@ -116,19 +116,10 @@
 		            time:2
 		        });
 				$("#refid").focus();
-			return false;
+				return false;
 			}
-			if($("#reftype").val()==""){
-				$("#reftype").tips({
-					side:3,
-		            msg:'请输入0顶级,1非顶级',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#reftype").focus();
-			return false;
-			}
-			if($("#info").val()==""){
+
+			if($("#info").val()=="" && $("#imgUrl").val()==""){
 				$("#info").tips({
 					side:3,
 		            msg:'请输入文字',
@@ -136,48 +127,17 @@
 		            time:2
 		        });
 				$("#info").focus();
-			return false;
+				return false;
+                $("#imgUrl").tips({
+                    side:3,
+                    msg:'请输入图片地址',
+                    bg:'#AE81FF',
+                    time:2
+                });
+                $("#imgUrl").focus();
+                return false;
 			}
-			if($("#crtime").val()==""){
-				$("#crtime").tips({
-					side:3,
-		            msg:'请输入创建时间',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#crtime").focus();
-			return false;
-			}
-			if($("#uptime").val()==""){
-				$("#uptime").tips({
-					side:3,
-		            msg:'请输入更新时间',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#uptime").focus();
-			return false;
-			}
-			if($("#isdel").val()==""){
-				$("#isdel").tips({
-					side:3,
-		            msg:'请输入软删除',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#isdel").focus();
-			return false;
-			}
-			if($("#state").val()==""){
-				$("#state").tips({
-					side:3,
-		            msg:'请输入状态',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#state").focus();
-			return false;
-			}
+
 			if($("#sort").val()==""){
 				$("#sort").tips({
 					side:3,
@@ -188,16 +148,7 @@
 				$("#sort").focus();
 			return false;
 			}
-			if($("#imgUrl").val()==""){
-				$("#imgUrl").tips({
-					side:3,
-		            msg:'请输入图片地址',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#imgUrl").focus();
-			return false;
-			}
+
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();
@@ -207,6 +158,32 @@
 			//日期框
 			$('.date-picker').datepicker({autoclose: true,todayHighlight: true});
 		});
+        //选择图片
+        function xuanTp(ID){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="选择图片";
+            diag.URL = '<%=basePath%>pictures/listfortc.do';
+            diag.Width = 860;
+            diag.Height = 680;
+            diag.CancelEvent = function(){ //关闭事件
+                $("#"+ID).val(diag.innerFrame.contentWindow.document.getElementById('xzvalue').value);
+                diag.close();
+            };
+            diag.show();
+        }
+
+        //显示图片
+        function showTU(ID,TPID){
+            $("#"+TPID).html('<img width="200" src="'+$("#"+ID).val()+'">');
+            $("#"+TPID).show();
+        }
+
+        //隐藏图片
+        function hideTU(TPID){
+            $("#"+TPID).hide();
+        }
 		</script>
 </body>
 </html>

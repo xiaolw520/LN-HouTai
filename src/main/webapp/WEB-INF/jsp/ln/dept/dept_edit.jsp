@@ -16,6 +16,14 @@
 	<%@ include file="../../system/index/top.jsp"%>
 	<!-- 日期框 -->
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
+		<style type="text/css">
+			.yulantu{
+				z-index: 9999999999999999;
+				position:absolute;
+				border:2px solid #76ACCD;
+				display: none;
+			}
+		</style>
 </head>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
@@ -39,6 +47,13 @@
 								<td style="width:75px;text-align: right;padding-top: 13px;">简介:</td>
 								<td><textarea style="height:100px;width:98%" type="text" name="info" id="info" value="${pd.info}" maxlength="255" placeholder="这里输入简介" title="简介" style="width:98%;">${pd.info}</textarea></td>
 							</tr>--%>
+							<tr>
+								<td style="text-align: right;padding-top: 13px;">图片:</td>
+								<td><input type="text" name="imgUrl" id="imgUrl" value="${pd.imgUrl}" maxlength="100" placeholder="图片地址" title="图片地址" style="width:86%;" onmouseover="showTU('imgUrl','yulantu');" onmouseout="hideTU('yulantu');"/>
+									<div class="yulantu" id="yulantu"></div>
+									<a class="btn btn-xs btn-info" style="margin-top: -5px;" title="选择" onclick="xuanTp('imgUrl');">选择 </a>
+								</td>
+							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">颜色:</td>
 								<td><input type="text" name="color" id="color" value="${pd.color}" maxlength="255" placeholder="这里输入颜色如：#323322" title="颜色" style="width:98%;"/></td>
@@ -97,16 +112,16 @@
 				$("#name").focus();
 				return false;
 			}
-			/*if($("#info").val()==""){
-				$("#info").tips({
+			if($("#imgUrl").val()==""){
+				$("#imgUrl").tips({
 					side:3,
-		            msg:'请输入简介',
+		            msg:'请选择图片',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#info").focus();
+				$("#imgUrl").focus();
 				return false;
-			}*/
+			}
 
 			$("#Form").submit();
 			$("#zhongxin").hide();
@@ -117,6 +132,32 @@
 			//日期框
 			$('.date-picker').datepicker({autoclose: true,todayHighlight: true});
 		});
+        //选择图片
+        function xuanTp(ID){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="选择图片";
+            diag.URL = '<%=basePath%>pictures/listfortc.do';
+            diag.Width = 860;
+            diag.Height = 680;
+            diag.CancelEvent = function(){ //关闭事件
+                $("#"+ID).val(diag.innerFrame.contentWindow.document.getElementById('xzvalue').value);
+                diag.close();
+            };
+            diag.show();
+        }
+
+        //显示图片
+        function showTU(ID,TPID){
+            $("#"+TPID).html('<img width="200" src="'+$("#"+ID).val()+'">');
+            $("#"+TPID).show();
+        }
+
+        //隐藏图片
+        function hideTU(TPID){
+            $("#"+TPID).hide();
+        }
 		</script>
 </body>
 </html>

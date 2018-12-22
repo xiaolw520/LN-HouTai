@@ -12,7 +12,8 @@
 		refid,	
 		reftype,	
 		name,	
-		info,	
+		info,
+		imgUrl,
 		crtime,	
 		uptime,	
 		isdel,	
@@ -28,7 +29,8 @@
 		#{reftype},	
 		#{name},	
 		#{info},	
-		#{crtime},	
+		#{imgUrl},
+		#{crtime},
 		#{uptime},	
 		#{isdel},	
 		#{state},
@@ -63,6 +65,7 @@
 		set 
 			name = #{name},
 			info = #{info},
+			imgUrl = #{imgUrl},
 			uptime = #{uptime},
 			color = #{color},
 			sort = #{sort}
