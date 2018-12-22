@@ -23,7 +23,12 @@ public interface DeptManager {
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception;
-	
+
+	/**软删除
+	 * @param pd
+	 * @throws Exception
+	 */
+	public void softDelete(PageData pd)throws Exception;
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -41,7 +46,13 @@ public interface DeptManager {
 	 * @throws Exception
 	 */
 	public List<PageData> listAll(PageData pd)throws Exception;
-	
+
+	/**名称列表(全部)
+	 * @param pd
+	 * @throws Exception
+	 */
+	public List<PageData> nameListAll(PageData pd)throws Exception;
+
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
@@ -53,6 +64,12 @@ public interface DeptManager {
 	 * @throws Exception
 	 */
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception;
+
+	/**批量软删除
+	 * @param ArrayDATA_IDS
+	 * @throws Exception
+	 */
+	public void softDeleteAll(String[] ArrayDATA_IDS)throws Exception;
 	
 }
 

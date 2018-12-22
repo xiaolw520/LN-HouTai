@@ -67,14 +67,13 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-									<th class="center">上级院系</th>
-									<th class="center">0顶级,1非顶级</th>
 									<th class="center">院系名称</th>
-									<th class="center">描述</th>
+									<%--<th class="center">简介</th>--%>
+									<th class="center">颜色</th>
+									<th class="center">排序</th>
 									<th class="center">创建时间</th>
 									<th class="center">更新时间</th>
 									<th class="center">软删除</th>
-									<th class="center">状态</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -87,29 +86,32 @@
 									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
 											<td class='center'>
-												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.DEPT_ID}" class="ace" /><span class="lbl"></span></label>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.deptid}" class="ace" /><span class="lbl"></span></label>
 											</td>
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
-											<td class='center'>${var.REFID}</td>
-											<td class='center'>${var.REFTYPE}</td>
-											<td class='center'>${var.NAME}</td>
-											<td class='center'>${var.DESC}</td>
-											<td class='center'>${var.CRTIME}</td>
-											<td class='center'>${var.UPTIME}</td>
-											<td class='center'>${var.ISDEL}</td>
-											<td class='center'>${var.STATE}</td>
+											
+											<td class='center'>${var.name}</td>
+											<%--<td class='center'>${var.info}</td>--%>
+											<td class='center'>${var.color}</td>
+											<td class='center'>${var.sort}</td>
+											<td class='center'><fmt:formatDate value="${var.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+											<td class='center'><fmt:formatDate value="${var.uptime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+											<td class='center'>
+												<c:if test="${var.isdel=='true'}"><span class="label label-important arrowed-in">是</span></c:if>
+												<c:if test="${var.isdel=='false'}"><span class="label label-success arrowed">否</span></c:if>
+											</td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.DEPT_ID}');">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.deptid}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
 													<c:if test="${QX.del == 1 }">
-													<a class="btn btn-xs btn-danger" onclick="del('${var.DEPT_ID}');">
+													<a class="btn btn-xs btn-danger" onclick="del('${var.deptid}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
@@ -123,7 +125,7 @@
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.DEPT_ID}');" class="tooltip-success" data-rel="tooltip" title="修改">
+																<a style="cursor:pointer;" onclick="edit('${var.deptid}');" class="tooltip-success" data-rel="tooltip" title="修改">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
@@ -132,7 +134,7 @@
 															</c:if>
 															<c:if test="${QX.del == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="del('${var.DEPT_ID}');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="del('${var.deptid}');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
@@ -293,7 +295,7 @@
 			bootbox.confirm("确定要删除吗?", function(result) {
 				if(result) {
 					top.jzts();
-					var url = "<%=basePath%>dept/delete.do?DEPT_ID="+Id+"&tm="+new Date().getTime();
+					var url = "<%=basePath%>dept/softDelete.do?deptid="+Id+"&tm="+new Date().getTime();
 					$.get(url,function(data){
 						tosearch();
 					});
@@ -307,7 +309,7 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>dept/goEdit.do?DEPT_ID='+Id;
+			 diag.URL = '<%=basePath%>dept/goEdit.do?deptid='+Id;
 			 diag.Width = 450;
 			 diag.Height = 355;
 			 diag.Modal = true;				//有无遮罩窗口
@@ -351,7 +353,7 @@
 							top.jzts();
 							$.ajax({
 								type: "POST",
-								url: '<%=basePath%>dept/deleteAll.do?tm='+new Date().getTime(),
+								url: '<%=basePath%>dept/softDeleteAll.do?tm='+new Date().getTime(),
 						    	data: {DATA_IDS:str},
 								dataType:'json',
 								//beforeSend: validateData,

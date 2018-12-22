@@ -27,21 +27,39 @@
 				<div class="row">
 					<div class="col-xs-12">
 					
-					<form action="dept/${msg }.do" name="Form" id="Form" method="post">
-						<input type="hidden" name="deptid" id="deptid" value="${pd.deptid}"/>
+					<form action="profession/${msg }.do" name="Form" id="Form" method="post">
+						<input type="hidden" name="PROFESSION_ID" id="PROFESSION_ID" value="${pd.PROFESSION_ID}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">院系名称:</td>
-								<td><input type="text" name="name" id="name" value="${pd.name}" maxlength="255" placeholder="这里输入院系名称" title="院系名称" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">专业名称:</td>
+								<td><input type="text" name="name" id="name" value="${pd.name}" maxlength="255" placeholder="这里输入专业名称" title="专业名称" style="width:98%;"/></td>
 							</tr>
-							<%--<tr style="height:100px;">
-								<td style="width:75px;text-align: right;padding-top: 13px;">简介:</td>
-								<td><textarea style="height:100px;width:98%" type="text" name="info" id="info" value="${pd.info}" maxlength="255" placeholder="这里输入简介" title="简介" style="width:98%;">${pd.info}</textarea></td>
-							</tr>--%>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">颜色:</td>
-								<td><input type="text" name="color" id="color" value="${pd.color}" maxlength="255" placeholder="这里输入颜色如：#323322" title="颜色" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">所属院系:</td>
+								<td>
+									<%--<input type="text" name="refid" id="refid" value="${pd.refid}" maxlength="36" placeholder="这里输入所属院系" title="所属院系" style="width:98%;"/>--%>
+									<select class="chosen-select form-control" name="refid" id="refid" data-placeholder="请选择院系" style="vertical-align:top;width:98%;">
+
+										<c:forEach items="${deptNames}" var="var" varStatus="vs">
+											<option value="${var.deptid}" <c:if test="${var.deptid==pd.refid}">selected = "selected" </c:if>>${var.name}</option>
+										</c:forEach>
+									</select>
+
+
+								</td>
+							</tr>
+							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">主干课程:</td>
+								<td><textarea type="text" name="course" id="course" value="${pd.course}" maxlength="255" placeholder="这里输入主干课程" title="主干课程" style="width:98%;">${pd.course}</textarea></td>
+							</tr>
+							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">证书:</td>
+								<td><input type="text" name="credential" id="credential" value="${pd.credential}" maxlength="255" placeholder="这里输入证书" title="证书" style="width:98%;"/></td>
+							</tr>
+							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">就业方向:</td>
+								<td><textarea type="text" name="work" id="work" value="${pd.work}" maxlength="255" placeholder="这里输入就业方向" title="就业方向" style="width:98%;">${pd.work}</textarea></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">排序:</td>
@@ -87,27 +105,56 @@
 		$(top.hangge());
 		//保存
 		function save(){
+			if($("#refid").val()==""){
+				$("#refid").tips({
+					side:3,
+		            msg:'请输入所属院系',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#refid").focus();
+			return false;
+			}
 			if($("#name").val()==""){
 				$("#name").tips({
 					side:3,
-		            msg:'请输入院系名称',
+		            msg:'请输入专业名称',
 		            bg:'#AE81FF',
 		            time:2
 		        });
 				$("#name").focus();
-				return false;
+			return false;
 			}
-			/*if($("#info").val()==""){
-				$("#info").tips({
+			if($("#course").val()==""){
+				$("#course").tips({
 					side:3,
-		            msg:'请输入简介',
+		            msg:'请输入主干课程',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#info").focus();
-				return false;
-			}*/
-
+				$("#course").focus();
+			return false;
+			}
+			if($("#credential").val()==""){
+				$("#credential").tips({
+					side:3,
+		            msg:'请输入证书',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("# credential").focus();
+			return false;
+			}
+			if($("#work").val()==""){
+				$("#work").tips({
+					side:3,
+		            msg:'请输入就业方向',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#work").focus();
+			return false;
+			}
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();

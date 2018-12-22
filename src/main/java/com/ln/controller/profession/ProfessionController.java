@@ -1,4 +1,4 @@
-package com.ln.controller.dept;
+package com.ln.controller.profession;
 
 import java.io.PrintWriter;
 import java.text.DateFormat;
@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import com.ln.entity.Code;
-import org.apache.commons.lang.StringUtils;
+import com.ln.service.dept.DeptManager;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -27,92 +27,86 @@ import com.fh.util.ObjectExcelView;
 import com.fh.util.PageData;
 import com.fh.util.Jurisdiction;
 import com.fh.util.Tools;
-import com.ln.service.dept.DeptManager;
+import com.ln.service.profession.ProfessionManager;
 
-/** 
- * 说明：院系
+/**
+ * 说明：专业
  * 创建人：xiaolw Q76114567
- * 创建时间：2018-12-13
+ * 创建时间：2018-12-15
  */
 @Controller
-@RequestMapping(value="/dept")
-public class DeptController extends BaseController {
-	
-	String menuUrl = "dept/list.do"; //菜单地址(权限用)
+@RequestMapping(value="/profession")
+public class ProfessionController extends BaseController {
+
+	String menuUrl = "profession/list.do"; //菜单地址(权限用)
+	@Resource(name="professionService")
+	private ProfessionManager professionService;
+
 	@Resource(name="deptService")
 	private DeptManager deptService;
-	
+
 	/**保存
 	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/save")
 	public ModelAndView save() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"新增Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"新增Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "add")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd.put("deptid", this.get32UUID());	//主键
 		pd.put("reftype", (byte) 1);
 		pd.put("isdel",false);
 		pd.put("state",0);
-		if(StringUtils.isEmpty(pd.get("color").toString())){
-			pd.put("color","#000000");
-		}
-		if(StringUtils.isEmpty(pd.get("sort").toString())){
-			pd.put("sort",0);
-		}
+		pd.put("professionid", this.get32UUID());	//主键
 		pd.put("uptime", pd.get("crtime").toString());//设置修改时间
-		deptService.save(pd);
+		professionService.save(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
 	/**删除
 	 * @param out
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/delete")
 	public void delete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		deptService.delete(pd);
+		professionService.delete(pd);
 		out.write("success");
 		out.close();
 	}
-	
+
 	/**修改
 	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/edit")
 	public ModelAndView edit() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"修改Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"修改Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "edit")){return null;} //校验权限
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		if(StringUtils.isEmpty(pd.get("color").toString())){
-			pd.put("color","#000000");
-		}
 		pd.put("uptime",/*DateUtil.getTime()*/new Date());
-		deptService.edit(pd);
+		professionService.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
 		return mv;
 	}
-	
+
 	/**列表
 	 * @param page
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/list")
 	public ModelAndView list(Page page) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"列表Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"列表Profession");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
@@ -122,14 +116,14 @@ public class DeptController extends BaseController {
 			pd.put("keywords", keywords.trim());
 		}
 		page.setPd(pd);
-		List<PageData>	varList = deptService.list(page);	//列出Dept列表
-		mv.setViewName("ln/dept/dept_list");
+		List<PageData>	varList = professionService.list(page);	//列出Profession列表
+		mv.setViewName("ln/profession/profession_list");
 		mv.addObject("varList", varList);
 		mv.addObject("pd", pd);
 		mv.addObject("QX",Jurisdiction.getHC());	//按钮权限
 		return mv;
 	}
-	
+
 	/**去新增页面
 	 * @param
 	 * @throws Exception
@@ -140,13 +134,16 @@ public class DeptController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd.put("crtime",/*DateUtil.getTime()*/new Date());
-		mv.setViewName("ln/dept/dept_edit");
+		List<PageData> deptNames = deptService.nameListAll(new PageData());
+		mv.addObject("deptNames", deptNames);
+		mv.setViewName("ln/profession/profession_edit");
 		mv.addObject("msg", "save");
+
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
-	 /**去修改页面
+	}
+
+	/**去修改页面
 	 * @param
 	 * @throws Exception
 	 */
@@ -155,8 +152,10 @@ public class DeptController extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		pd = deptService.findById(pd);	//根据ID读取
-		mv.setViewName("ln/dept/dept_edit");
+		pd = professionService.findById(pd);	//根据ID读取
+		List<PageData> deptNames = deptService.nameListAll(new PageData());
+		mv.addObject("deptNames", deptNames);
+		mv.setViewName("ln/profession/profession_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
@@ -173,10 +172,11 @@ public class DeptController extends BaseController {
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
+		pd = this.getPageData();
 		Code code = null;
 		List<PageData>	varList = null;	//列出Banner列表
 		try {
-			varList = deptService.nameListAll(pd);
+			varList = professionService.listAll(pd);
 			if(varList !=null && varList.size()>0){
 				code = Code.Success;
 			}else {
@@ -193,18 +193,17 @@ public class DeptController extends BaseController {
 		return AppUtil.returnObject(pd, map);
 
 	}
-
 	/**软删除
 	 * @param out
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/softDelete")
 	public void softDelete(PrintWriter out) throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"删除Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"删除Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
 		PageData pd = new PageData();
 		pd = this.getPageData();
-		deptService.softDelete(pd);
+		professionService.softDelete(pd);
 		out.write("success");
 		out.close();
 	}
@@ -216,7 +215,7 @@ public class DeptController extends BaseController {
 	@RequestMapping(value="/softDeleteAll")
 	@ResponseBody
 	public Object softDeleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
 		PageData pd = new PageData();
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -225,7 +224,7 @@ public class DeptController extends BaseController {
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			deptService.softDeleteAll(ArrayDATA_IDS);
+			professionService.softDeleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -234,23 +233,24 @@ public class DeptController extends BaseController {
 		map.put("list", pdList);
 		return AppUtil.returnObject(pd, map);
 	}
-	 /**批量删除
+
+	/**批量删除
 	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/deleteAll")
 	@ResponseBody
 	public Object deleteAll() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"批量删除Dept");
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除Profession");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
-		PageData pd = new PageData();		
+		PageData pd = new PageData();
 		Map<String,Object> map = new HashMap<String,Object>();
 		pd = this.getPageData();
 		List<PageData> pdList = new ArrayList<PageData>();
 		String DATA_IDS = pd.getString("DATA_IDS");
 		if(null != DATA_IDS && !"".equals(DATA_IDS)){
 			String ArrayDATA_IDS[] = DATA_IDS.split(",");
-			deptService.deleteAll(ArrayDATA_IDS);
+			professionService.deleteAll(ArrayDATA_IDS);
 			pd.put("msg", "ok");
 		}else{
 			pd.put("msg", "no");
@@ -259,41 +259,45 @@ public class DeptController extends BaseController {
 		map.put("list", pdList);
 		return AppUtil.returnObject(pd, map);
 	}
-	
-	 /**导出到excel
+
+	/**导出到excel
 	 * @param
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/excel")
 	public ModelAndView exportExcel() throws Exception{
-		logBefore(logger, Jurisdiction.getUsername()+"导出Dept到excel");
+		logBefore(logger, Jurisdiction.getUsername()+"导出Profession到excel");
 		if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;}
 		ModelAndView mv = new ModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Map<String,Object> dataMap = new HashMap<String,Object>();
 		List<String> titles = new ArrayList<String>();
-		titles.add("上级院系");	//1
+		titles.add("所属院系");	//1
 		titles.add("0顶级,1非顶级");	//2
-		titles.add("院系名称");	//3
-		titles.add("描述");	//4
+		titles.add("专业名称");	//3
+		titles.add("主干课程");	//4
 		titles.add("创建时间");	//5
 		titles.add("更新时间");	//6
 		titles.add("软删除");	//7
 		titles.add("状态");	//8
+		titles.add("证书");	//9
+		titles.add("就业方向");	//10
 		dataMap.put("titles", titles);
-		List<PageData> varOList = deptService.listAll(pd);
+		List<PageData> varOList = professionService.listAll(pd);
 		List<PageData> varList = new ArrayList<PageData>();
 		for(int i=0;i<varOList.size();i++){
 			PageData vpd = new PageData();
-			vpd.put("var1", varOList.get(i).getString("REFID"));	    //1
-			vpd.put("var2", varOList.get(i).get("REFTYPE").toString());	//2
-			vpd.put("var3", varOList.get(i).getString("NAME"));	    //3
-			vpd.put("var4", varOList.get(i).getString("DESC"));	    //4
-			vpd.put("var5", varOList.get(i).getString("CRTIME"));	    //5
-			vpd.put("var6", varOList.get(i).getString("UPTIME"));	    //6
-			vpd.put("var7", varOList.get(i).get("ISDEL").toString());	//7
-			vpd.put("var8", varOList.get(i).get("STATE").toString());	//8
+			vpd.put("var1", varOList.get(i).getString("refid"));	    //1
+			vpd.put("var2", varOList.get(i).get("reftype").toString());	//2
+			vpd.put("var3", varOList.get(i).getString("name"));	    //3
+			vpd.put("var4", varOList.get(i).getString("course"));	    //4
+			vpd.put("var5", varOList.get(i).getString("crtime"));	    //5
+			vpd.put("var6", varOList.get(i).getString("uptime"));	    //6
+			vpd.put("var7", varOList.get(i).get("isdel").toString());	//7
+			vpd.put("var8", varOList.get(i).get("state").toString());	//8
+			vpd.put("var9", varOList.get(i).getString(" credential"));	    //9
+			vpd.put("var10", varOList.get(i).getString("work"));	    //10
 			varList.add(vpd);
 		}
 		dataMap.put("varList", varList);
@@ -301,7 +305,7 @@ public class DeptController extends BaseController {
 		mv = new ModelAndView(erv,dataMap);
 		return mv;
 	}
-	
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder){
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");

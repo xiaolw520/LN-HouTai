@@ -31,13 +31,13 @@
 						<div class="col-xs-12">
 							
 						<!-- 检索  -->
-						<form action="${objectNameLower}/list.do" method="post" name="Form" id="Form">
+						<form action="profession/list.do" method="post" name="Form" id="Form">
 						<table style="margin-top:5px;">
 							<tr>
 								<td>
 									<div class="nav-search">
 										<span class="input-icon">
-											<input type="text" placeholder="这里输入关键词" class="nav-search-input" id="nav-search-input" autocomplete="off" name="keywords" value="${r"${pd.keywords }"}" placeholder="这里输入关键词"/>
+											<input type="text" placeholder="这里输入关键词" class="nav-search-input" id="nav-search-input" autocomplete="off" name="keywords" value="${pd.keywords }" placeholder="这里输入关键词"/>
 											<i class="ace-icon fa fa-search nav-search-icon"></i>
 										</span>
 									</div>
@@ -52,10 +52,10 @@
 									<option value="">2</option>
 								  	</select>
 								</td>
-								<c:if test="${r"${QX.cha == 1 }"}">
+								<c:if test="${QX.cha == 1 }">
 								<td style="vertical-align:top;padding-left:2px"><a class="btn btn-light btn-xs" onclick="tosearch();"  title="检索"><i id="nav-search-icon" class="ace-icon fa fa-search bigger-110 nav-search-icon blue"></i></a></td>
 								</c:if>
-								<c:if test="${r"${QX.toExcel == 1 }"}"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
+								<c:if test="${QX.toExcel == 1 }"><td style="vertical-align:top;padding-left:2px;"><a class="btn btn-light btn-xs" onclick="toExcel();" title="导出到EXCEL"><i id="nav-search-icon" class="ace-icon fa fa-download bigger-110 nav-search-icon blue"></i></a></td></c:if>
 							</tr>
 						</table>
 						<!-- 检索  -->
@@ -67,9 +67,14 @@
 									<label class="pos-rel"><input type="checkbox" class="ace" id="zcheckbox" /><span class="lbl"></span></label>
 									</th>
 									<th class="center" style="width:50px;">序号</th>
-								<#list fieldList as var>
-									<th class="center">${var[2]}</th>
-								</#list>
+									<th class="center">所属院系</th>
+									<th class="center">专业名称</th>
+									<th class="center">主干课程</th>
+									<th class="center">创建时间</th>
+									<th class="center">更新时间</th>
+									<th class="center">软删除</th>
+									<th class="center">证书</th>
+									<th class="center">就业方向</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
@@ -77,29 +82,37 @@
 							<tbody>
 							<!-- 开始循环 -->	
 							<c:choose>
-								<c:when test="${r"${not empty varList}"}">
-									<c:if test="${r"${QX.cha == 1 }"}">
-									<c:forEach items="${r"${varList}"}" var="var" varStatus="vs">
+								<c:when test="${not empty varList}">
+									<c:if test="${QX.cha == 1 }">
+									<c:forEach items="${varList}" var="var" varStatus="vs">
 										<tr>
 											<td class='center'>
-												<label class="pos-rel"><input type='checkbox' name='ids' value="${r"${var."}${objectNameLower}id${r"}"}" class="ace" /><span class="lbl"></span></label>
+												<label class="pos-rel"><input type='checkbox' name='ids' value="${var.professionid}" class="ace" /><span class="lbl"></span></label>
 											</td>
-											<td class='center' style="width: 30px;">${r"${vs.index+1}"}</td>
-										<#list fieldList as var>
-											<td class='center'>${r"${var."}${var[0]}${r"}"}</td>
-										</#list>
+											<td class='center' style="width: 30px;">${vs.index+1}</td>
+											<td class='center'>${var.d_name}</td>
+											<td class='center'>${var.name}</td>
+											<td class='center'>${var.course}</td>
+											<td class='center'><fmt:formatDate value="${var.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+											<td class='center'><fmt:formatDate value="${var.uptime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+											<td class='center'>
+												<c:if test="${var.isdel=='true'}"><span class="label label-important arrowed-in">是</span></c:if>
+												<c:if test="${var.isdel=='false'}"><span class="label label-success arrowed">否</span></c:if>
+											</td>
+											<td class='center'>${var. credential}</td>
+											<td class='center'>${var.work}</td>
 											<td class="center">
-												<c:if test="${r"${QX.edit != 1 && QX.del != 1 }"}">
+												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
-													<c:if test="${r"${QX.edit == 1 }"}">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${r"${var."}${objectNameLower}id${r"}"}');">
+													<c:if test="${QX.edit == 1 }">
+													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.professionid}');">
 														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
 													</a>
 													</c:if>
-													<c:if test="${r"${QX.del == 1 }"}">
-													<a class="btn btn-xs btn-danger" onclick="del('${r"${var."}${objectNameLower}id${r"}"}');">
+													<c:if test="${QX.del == 1 }">
+													<a class="btn btn-xs btn-danger" onclick="del('${var.professionid}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
 													</c:if>
@@ -111,18 +124,18 @@
 														</button>
 			
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-															<c:if test="${r"${QX.edit == 1 }"}">
+															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="edit('${r"${var."}${objectNameLower}id${r"}"}');" class="tooltip-success" data-rel="tooltip" title="修改">
+																<a style="cursor:pointer;" onclick="edit('${var.professionid}');" class="tooltip-success" data-rel="tooltip" title="修改">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
 																</a>
 															</li>
 															</c:if>
-															<c:if test="${r"${QX.del == 1 }"}">
+															<c:if test="${QX.del == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="del('${r"${var."}${objectNameLower}id${r"}"}');" class="tooltip-error" data-rel="tooltip" title="删除">
+																<a style="cursor:pointer;" onclick="del('${var.professionid}');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
@@ -137,7 +150,7 @@
 									
 									</c:forEach>
 									</c:if>
-									<c:if test="${r"${QX.cha == 0 }"}">
+									<c:if test="${QX.cha == 0 }">
 										<tr>
 											<td colspan="100" class="center">您无权查看</td>
 										</tr>
@@ -155,14 +168,14 @@
 						<table style="width:100%;">
 							<tr>
 								<td style="vertical-align:top;">
-									<c:if test="${r"${QX.add == 1 }"}">
+									<c:if test="${QX.add == 1 }">
 									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
 									</c:if>
-									<c:if test="${r"${QX.del == 1 }"}">
+									<c:if test="${QX.del == 1 }">
 									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 									</c:if>
 								</td>
-								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${r"${page.pageStr}"}</div></td>
+								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
 						</div>
@@ -259,15 +272,15 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>${objectNameLower}/goAdd.do';
-			 diag.Width = 450;
-			 diag.Height = 355;
+			 diag.URL = '<%=basePath%>profession/goAdd.do';
+			 diag.Width = 650;
+			 diag.Height = 455;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮
 			 diag.CancelEvent = function(){ //关闭事件
 				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 if('${r"${page.currentPage}"}' == '0'){
+					 if('${page.currentPage}' == '0'){
 						 tosearch();
 					 }else{
 						 tosearch();
@@ -283,7 +296,7 @@
 			bootbox.confirm("确定要删除吗?", function(result) {
 				if(result) {
 					top.jzts();
-					var url = "<%=basePath%>${objectNameLower}/delete.do?${objectNameLower}id="+Id+"&tm="+new Date().getTime();
+					var url = "<%=basePath%>profession/softDelete.do?professionid="+Id+"&tm="+new Date().getTime();
 					$.get(url,function(data){
 						tosearch();
 					});
@@ -297,7 +310,7 @@
 			 var diag = new top.Dialog();
 			 diag.Drag=true;
 			 diag.Title ="编辑";
-			 diag.URL = '<%=basePath%>${objectNameLower}/goEdit.do?${objectNameLower}id='+Id;
+			 diag.URL = '<%=basePath%>profession/goEdit.do?professionid='+Id;
 			 diag.Width = 450;
 			 diag.Height = 355;
 			 diag.Modal = true;				//有无遮罩窗口
@@ -341,7 +354,7 @@
 							top.jzts();
 							$.ajax({
 								type: "POST",
-								url: '<%=basePath%>${objectNameLower}/deleteAll.do?tm='+new Date().getTime(),
+								url: '<%=basePath%>profession/softDeleteAll.do?tm='+new Date().getTime(),
 						    	data: {DATA_IDS:str},
 								dataType:'json',
 								//beforeSend: validateData,
@@ -360,7 +373,7 @@
 		
 		//导出excel
 		function toExcel(){
-			window.location.href='<%=basePath%>${objectNameLower}/excel.do';
+			window.location.href='<%=basePath%>profession/excel.do';
 		}
 	</script>
 

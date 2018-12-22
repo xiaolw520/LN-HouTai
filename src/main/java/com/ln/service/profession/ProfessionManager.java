@@ -1,16 +1,17 @@
-package com.ln.service.${packageName};
+package com.ln.service.profession;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
+import com.ln.entity.Profession;
 
 /** 
- * 说明： ${TITLE}接口
+ * 说明： 专业接口
  * 创建人：xiaolw Q76114567
- * 创建时间：${nowDate?string("yyyy-MM-dd")}
+ * 创建时间：2018-12-15
  * @version
  */
-public interface ${objectName}Manager{
+public interface ProfessionManager{
 
 	/**新增
 	 * @param pd
@@ -40,6 +41,12 @@ public interface ${objectName}Manager{
 	 * @throws Exception
 	 */
 	public List<PageData> list(Page page)throws Exception;
+
+	/**列表
+	 * @param page
+	 * @throws Exception
+	 */
+	public List<Profession> listProfession(Page page)throws Exception;
 	
 	/**列表(全部)
 	 * @param pd

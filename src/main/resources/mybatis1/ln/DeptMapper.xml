@@ -9,27 +9,31 @@
 	
 	<!-- 字段 -->
 	<sql id="Field">
-		refid,
-		reftype,
-		name,
-		info,
-		crtime,
-		uptime,
-		isdel,
+		refid,	
+		reftype,	
+		name,	
+		info,	
+		crtime,	
+		uptime,	
+		isdel,	
 		state,
+		color,	
+		sort,	
 		deptid
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
-		#{refid},
-		#{reftype},
-		#{name},
-		#{info},
-		#{crtime},
-		#{uptime},
-		#{isdel},
+		#{refid},	
+		#{reftype},	
+		#{name},	
+		#{info},	
+		#{crtime},	
+		#{uptime},	
+		#{isdel},	
 		#{state},
+		#{color},	
+		#{sort},	
 		#{deptid}
 	</sql>
 	
@@ -57,17 +61,13 @@
 		update
 		<include refid="tableName"></include>
 		set 
-			refid = #{refid},
-			reftype = #{reftype},
 			name = #{name},
 			info = #{info},
-			crtime = #{crtime},
 			uptime = #{uptime},
-			isdel = #{isdel},
-			state = #{state},
-		deptid = deptid
+			color = #{color},
+			sort = #{sort}
 		where 
-		deptid = #{deptid}
+			deptid = #{deptid}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -106,6 +106,15 @@
 		from 
 		<include refid="tableName"></include>
 	</select>
+
+	<!-- 列表(全部) -->
+	<select id="nameListAll" parameterType="pd" resultType="pd">
+		select
+			deptid,name,color
+		from
+		<include refid="tableName"></include>
+		where isdel = 0 order by sort
+	</select>
 	
 	<!-- 批量删除 -->
 	<delete id="deleteAll" parameterType="String">
@@ -117,5 +126,27 @@
                  #{item}
 		</foreach>
 	</delete>
-	
+
+	<!-- 软删除 -->
+	<update id="softDelete" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		isdel = 1
+		where
+		deptid = #{deptid}
+	</update>
+	<!-- 批量软删除 -->
+	<delete id="softDeleteAll" parameterType="String">
+		update
+		<include refid="tableName"></include>
+		set
+		isdel = 1
+		where
+		deptid in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
 </mapper>

@@ -35,7 +35,15 @@ public class ${objectName}Service implements ${objectName}Manager{
 	public void delete(PageData pd)throws Exception{
 		dao.delete("${objectName}Mapper.delete", pd);
 	}
-	
+
+	/**软删除
+	* @param pd
+	* @throws Exception
+	*/
+	public void softDelete(PageData pd) throws Exception {
+		dao.update("${objectName}Mapper.softDelete", pd);
+	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
@@ -77,6 +85,14 @@ public class ${objectName}Service implements ${objectName}Manager{
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
 		dao.delete("${objectName}Mapper.deleteAll", ArrayDATA_IDS);
 	}
-	
+
+	/**批量软删除
+	* @param ArrayDATA_IDS
+	* @throws Exception
+	*/
+	public void softDeleteAll(String[] ArrayDATA_IDS) throws Exception {
+		dao.update("${objectName}Mapper.softDeleteAll", ArrayDATA_IDS);
+	}
+
 }
 

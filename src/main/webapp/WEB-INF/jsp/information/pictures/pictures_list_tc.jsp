@@ -94,7 +94,7 @@
 										</td>
 										<td class="center">${var.TITLE}</td>
 										<td class="center" style="width:130px;">
-											<a class="btn btn-xs btn-info" title="选择" onclick="xuanTp('<%=basePath%>uploadFiles/uploadImgs/${var.PATH}');">选择 </a>
+											<a class="btn btn-xs btn-info" title="选择" onclick="xuanTp('uploadFiles/uploadImgs/${var.PATH}');">选择 </a>
 										</td>
 									</tr>
 								

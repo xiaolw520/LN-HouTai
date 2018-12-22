@@ -1,22 +1,21 @@
-package com.ln.service.dept.impl;
+package com.ln.service.banner.impl;
 
 import java.util.List;
 import javax.annotation.Resource;
-
-import com.ln.service.dept.DeptManager;
 import org.springframework.stereotype.Service;
 import com.fh.dao.DaoSupport;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
+import com.ln.service.banner.BannerManager;
 
 /** 
- * 说明： 院系
+ * 说明： 图片
  * 创建人：xiaolw Q76114567
- * 创建时间：2018-11-30
+ * 创建时间：2018-12-15
  * @version
  */
-@Service("deptService")
-public class DeptService implements DeptManager {
+@Service("bannerService")
+public class BannerService implements BannerManager{
 
 	@Resource(name = "daoSupport")
 	private DaoSupport dao;
@@ -26,7 +25,7 @@ public class DeptService implements DeptManager {
 	 * @throws Exception
 	 */
 	public void save(PageData pd)throws Exception{
-		dao.save("DeptMapper.save", pd);
+		dao.save("BannerMapper.save", pd);
 	}
 	
 	/**删除
@@ -34,22 +33,23 @@ public class DeptService implements DeptManager {
 	 * @throws Exception
 	 */
 	public void delete(PageData pd)throws Exception{
-		dao.delete("DeptMapper.delete", pd);
+		dao.delete("BannerMapper.delete", pd);
 	}
 
 	/**软删除
-	 * @param pd
-	 * @throws Exception
-	 */
+	* @param pd
+	* @throws Exception
+	*/
 	public void softDelete(PageData pd) throws Exception {
-		dao.update("DeptMapper.softDelete", pd);
+		dao.update("BannerMapper.softDelete", pd);
 	}
+
 	/**修改
 	 * @param pd
 	 * @throws Exception
 	 */
 	public void edit(PageData pd)throws Exception{
-		dao.update("DeptMapper.edit", pd);
+		dao.update("BannerMapper.edit", pd);
 	}
 	
 	/**列表
@@ -58,7 +58,7 @@ public class DeptService implements DeptManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> list(Page page)throws Exception{
-		return (List<PageData>)dao.findForList("DeptMapper.datalistPage", page);
+		return (List<PageData>)dao.findForList("BannerMapper.datalistPage", page);
 	}
 	
 	/**列表(全部)
@@ -67,22 +67,15 @@ public class DeptService implements DeptManager {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<PageData> listAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("DeptMapper.listAll", pd);
+		return (List<PageData>)dao.findForList("BannerMapper.listAll", pd);
 	}
-
-	/**名称列表(全部)
-	 * @param pd
-	 * @throws Exception
-	 */
-	public List<PageData> nameListAll(PageData pd)throws Exception{
-		return (List<PageData>)dao.findForList("DeptMapper.nameListAll", pd);
-	}
+	
 	/**通过id获取数据
 	 * @param pd
 	 * @throws Exception
 	 */
 	public PageData findById(PageData pd)throws Exception{
-		return (PageData)dao.findForObject("DeptMapper.findById", pd);
+		return (PageData)dao.findForObject("BannerMapper.findById", pd);
 	}
 	
 	/**批量删除
@@ -90,14 +83,16 @@ public class DeptService implements DeptManager {
 	 * @throws Exception
 	 */
 	public void deleteAll(String[] ArrayDATA_IDS)throws Exception{
-		dao.delete("DeptMapper.deleteAll", ArrayDATA_IDS);
+		dao.delete("BannerMapper.deleteAll", ArrayDATA_IDS);
 	}
+
 	/**批量软删除
-	 * @param ArrayDATA_IDS
-	 * @throws Exception
-	 */
+	* @param ArrayDATA_IDS
+	* @throws Exception
+	*/
 	public void softDeleteAll(String[] ArrayDATA_IDS) throws Exception {
-		dao.update("DeptMapper.softDeleteAll", ArrayDATA_IDS);
+		dao.update("BannerMapper.softDeleteAll", ArrayDATA_IDS);
 	}
+
 }
 

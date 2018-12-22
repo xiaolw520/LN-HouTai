@@ -17,7 +17,8 @@
 		<typeAlias type="com.fh.entity.system.Department" alias="Department"/>
 		
 		<!-- 这里添加生成的实体类 -->
-		
+		<typeAlias type="com.ln.entity.Dept" alias="dept"/>
+		<typeAlias type="com.ln.entity.Profession" alias="profession"/>
 		
 		<typeAlias type="com.fh.util.PageData" alias="pd"/>
 		<!-- 分页 -->

@@ -52,7 +52,7 @@ public class ${objectName}Controller extends BaseController {
 		pd.put("reftype", (byte) 1);
 		pd.put("isdel",false);
 		pd.put("state",0);
-		pd.put("${objectNameLower}id", this.get36UUID());	//主键
+		pd.put("${objectNameLower}id", this.get32UUID());	//主键
 		pd.put("uptime", pd.get("crtime").toString());//设置修改时间
 <#list fieldList as var>
 	<#if var[3] == "否">
@@ -99,6 +99,7 @@ public class ${objectName}Controller extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+		pd.put("uptime",/*DateUtil.getTime()*/new Date());
 		${objectNameLower}Service.edit(pd);
 		mv.addObject("msg","success");
 		mv.setViewName("save_result");
@@ -138,6 +139,7 @@ public class ${objectName}Controller extends BaseController {
 		ModelAndView mv = this.getModelAndView();
 		PageData pd = new PageData();
 		pd = this.getPageData();
+    	pd.put("crtime",/*DateUtil.getTime()*/new Date());
 		mv.setViewName("ln/${objectNameLower}/${objectNameLower}_edit");
 		mv.addObject("msg", "save");
 		mv.addObject("pd", pd);
@@ -158,8 +160,50 @@ public class ${objectName}Controller extends BaseController {
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
 		return mv;
-	}	
-	
+	}
+
+
+    /**软删除
+    * @param out
+    * @throws Exception
+    */
+    @RequestMapping(value="/softDelete")
+    public void softDelete(PrintWriter out) throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"删除${objectName}");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return;} //校验权限
+		PageData pd = new PageData();
+		pd = this.getPageData();
+		${objectNameLower}Service.softDelete(pd);
+		out.write("success");
+		out.close();
+    }
+
+    /**批量软删除
+    * @param
+    * @throws Exception
+    */
+    @RequestMapping(value="/softDeleteAll")
+    @ResponseBody
+    public Object softDeleteAll() throws Exception{
+		logBefore(logger, Jurisdiction.getUsername()+"批量删除${objectName}");
+		if(!Jurisdiction.buttonJurisdiction(menuUrl, "del")){return null;} //校验权限
+		PageData pd = new PageData();
+		Map<String,Object> map = new HashMap<String,Object>();
+		pd = this.getPageData();
+		List<PageData> pdList = new ArrayList<PageData>();
+			String DATA_IDS = pd.getString("DATA_IDS");
+			if(null != DATA_IDS && !"".equals(DATA_IDS)){
+			String ArrayDATA_IDS[] = DATA_IDS.split(",");
+			${objectNameLower}Service.softDeleteAll(ArrayDATA_IDS);
+			pd.put("msg", "ok");
+			}else{
+			pd.put("msg", "no");
+		}
+		pdList.add(pd);
+		map.put("list", pdList);
+		return AppUtil.returnObject(pd, map);
+	}
+
 	 /**批量删除
 	 * @param
 	 * @throws Exception

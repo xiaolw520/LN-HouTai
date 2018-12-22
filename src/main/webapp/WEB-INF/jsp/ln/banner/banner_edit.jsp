@@ -16,6 +16,14 @@
 	<%@ include file="../../system/index/top.jsp"%>
 	<!-- 日期框 -->
 	<link rel="stylesheet" href="static/ace/css/datepicker.css" />
+	<style type="text/css">
+		.yulantu{
+			z-index: 9999999999999999;
+			position:absolute;
+			border:2px solid #76ACCD;
+			display: none;
+		}
+	</style>
 </head>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
@@ -27,21 +35,29 @@
 				<div class="row">
 					<div class="col-xs-12">
 					
-					<form action="dept/${msg }.do" name="Form" id="Form" method="post">
-						<input type="hidden" name="deptid" id="deptid" value="${pd.deptid}"/>
+					<form action="banner/${msg }.do" name="Form" id="Form" method="post">
+						<input type="hidden" name="bannerid" id="bannerid" value="${pd.bannerid}"/>
 						<div id="zhongxin" style="padding-top: 13px;">
 						<table id="table_report" class="table table-striped table-bordered table-hover">
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">院系名称:</td>
-								<td><input type="text" name="name" id="name" value="${pd.name}" maxlength="255" placeholder="这里输入院系名称" title="院系名称" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">图片名称:</td>
+								<td><input type="text" name="name" id="name" value="${pd.name}" maxlength="255" placeholder="这里输入图片名称" title="图片名称" style="width:98%;"/></td>
 							</tr>
-							<%--<tr style="height:100px;">
-								<td style="width:75px;text-align: right;padding-top: 13px;">简介:</td>
-								<td><textarea style="height:100px;width:98%" type="text" name="info" id="info" value="${pd.info}" maxlength="255" placeholder="这里输入简介" title="简介" style="width:98%;">${pd.info}</textarea></td>
+							<%--<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">图片地址:</td>
+								<td><input type="text" name="imgUrl" id="imgUrl" value="${pd.imgUrl}" maxlength="255" placeholder="这里输入图片地址" title="图片地址" style="width:98%;"/></td>
 							</tr>--%>
 							<tr>
-								<td style="width:75px;text-align: right;padding-top: 13px;">颜色:</td>
-								<td><input type="text" name="color" id="color" value="${pd.color}" maxlength="255" placeholder="这里输入颜色如：#323322" title="颜色" style="width:98%;"/></td>
+								<td style="width:75px;text-align: right;padding-top: 13px;">图片地址:</td>
+								<td><input type="text" name="imgUrl" id="imgUrl" value="${pd.imgUrl}" maxlength="100" placeholder="图片地址" title="图片地址" style="width:86%;" onmouseover="showTU('imgUrl','yulantu');" onmouseout="hideTU('yulantu');"/>
+									<div class="yulantu" id="yulantu"></div>
+									<a class="btn btn-xs btn-info" style="margin-top: -5px;" title="选择" onclick="xuanTp('imgUrl');">选择 </a>
+								</td>
+							</tr>
+
+							<tr>
+								<td style="width:75px;text-align: right;padding-top: 13px;">跳转地址:</td>
+								<td><input type="text" name="href" id="href" value="${pd.href}" maxlength="255" placeholder="这里输入跳转地址" title="跳转地址" style="width:98%;"/></td>
 							</tr>
 							<tr>
 								<td style="width:75px;text-align: right;padding-top: 13px;">排序:</td>
@@ -52,6 +68,7 @@
 								<input name="crtime" value="<fmt:formatDate value="${pd.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/>" type="hidden"/>
 								<td><fmt:formatDate value="${pd.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 							</tr>
+
 							<tr>
 								<td style="text-align: center;" colspan="10">
 									<a class="btn btn-mini btn-primary" onclick="save();">保存</a>
@@ -90,24 +107,45 @@
 			if($("#name").val()==""){
 				$("#name").tips({
 					side:3,
-		            msg:'请输入院系名称',
+		            msg:'请输入图片名称',
 		            bg:'#AE81FF',
 		            time:2
 		        });
 				$("#name").focus();
-				return false;
+			return false;
 			}
-			/*if($("#info").val()==""){
-				$("#info").tips({
+
+			if($("#crtime").val()==""){
+				$("#crtime").tips({
 					side:3,
-		            msg:'请输入简介',
+		            msg:'请输入创建时间',
 		            bg:'#AE81FF',
 		            time:2
 		        });
-				$("#info").focus();
-				return false;
-			}*/
+				$("#crtime").focus();
+			return false;
+			}
 
+			if($("#sort").val()==""){
+				$("#sort").tips({
+					side:3,
+		            msg:'请输入排序',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#sort").focus();
+			return false;
+			}
+			if($("#imgUrl").val()==""){
+				$("#imgUrl").tips({
+					side:3,
+		            msg:'请输入图片地址',
+		            bg:'#AE81FF',
+		            time:2
+		        });
+				$("#imgUrl").focus();
+			return false;
+			}
 			$("#Form").submit();
 			$("#zhongxin").hide();
 			$("#zhongxin2").show();
@@ -117,6 +155,33 @@
 			//日期框
 			$('.date-picker').datepicker({autoclose: true,todayHighlight: true});
 		});
+
+        //选择图片
+        function xuanTp(ID){
+            top.jzts();
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="选择图片";
+            diag.URL = '<%=basePath%>pictures/listfortc.do';
+            diag.Width = 860;
+            diag.Height = 680;
+            diag.CancelEvent = function(){ //关闭事件
+                $("#"+ID).val(diag.innerFrame.contentWindow.document.getElementById('xzvalue').value);
+                diag.close();
+            };
+            diag.show();
+        }
+
+        //显示图片
+        function showTU(ID,TPID){
+            $("#"+TPID).html('<img width="200" src="'+$("#"+ID).val()+'">');
+            $("#"+TPID).show();
+        }
+
+        //隐藏图片
+        function hideTU(TPID){
+            $("#"+TPID).hide();
+        }
 		</script>
 </body>
 </html>

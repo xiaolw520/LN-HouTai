@@ -1,16 +1,16 @@
-package com.ln.service.${packageName};
+package com.ln.service.banner;
 
 import java.util.List;
 import com.fh.entity.Page;
 import com.fh.util.PageData;
 
 /** 
- * 说明： ${TITLE}接口
+ * 说明： 图片接口
  * 创建人：xiaolw Q76114567
- * 创建时间：${nowDate?string("yyyy-MM-dd")}
+ * 创建时间：2018-12-15
  * @version
  */
-public interface ${objectName}Manager{
+public interface BannerManager{
 
 	/**新增
 	 * @param pd

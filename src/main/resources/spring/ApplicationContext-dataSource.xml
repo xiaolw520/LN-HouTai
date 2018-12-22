@@ -60,7 +60,7 @@
 	</bean>  
 	<!-- 事物处理 -->
 	<aop:config>
-		<aop:pointcut id="pc" expression="execution(* com.fh.service..*(..))" />
+		<aop:pointcut id="pc" expression="execution(* com.fh.service..*(..)) || execution(* com.ln.service..*(..))" />
 		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
 	</aop:config>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -71,6 +71,8 @@
 			           rollback-for="java.lang.Exception" />
 			<tx:method name="update*" propagation="REQUIRED" read-only="false" 
 			           rollback-for="java.lang.Exception" />
+			<tx:method name="softDelete*" propagation="REQUIRED" read-only="false"
+					   rollback-for="java.lang.Exception" />
 			<tx:method name="save*" propagation="REQUIRED" read-only="false" 
 			           rollback-for="java.lang.Exception" />
 		</tx:attributes>
