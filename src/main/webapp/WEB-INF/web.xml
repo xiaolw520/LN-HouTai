@@ -61,6 +61,11 @@
 		<filter-name>loginFilter</filter-name>
 		<filter-class>com.fh.filter.LoginFilter</filter-class>
 	</filter>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/enroll/ajaxEnroll;/enroll/ajaxSubmit;/enroll/ajaxAccount</url-pattern>
+	</filter-mapping>
+
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>

@@ -113,7 +113,7 @@
 	<!-- 列表(全部) -->
 	<select id="nameListAll" parameterType="pd" resultType="pd">
 		select
-			deptid,name,color
+			deptid,name,color,imgUrl
 		from
 		<include refid="tableName"></include>
 		where isdel = 0 order by sort

@@ -150,6 +150,8 @@ public class DeptInfoController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		pd = deptinfoService.findById(pd);	//根据ID读取
+		List<PageData> deptNames = deptService.nameListAll(new PageData());
+		mv.addObject("deptNames", deptNames);
 		mv.setViewName("ln/dept/deptInfo_edit");
 		mv.addObject("msg", "edit");
 		mv.addObject("pd", pd);
@@ -157,12 +159,11 @@ public class DeptInfoController extends BaseController {
 	}
 
 	/**列表
-	 * @param page
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/ajaxlist",method = RequestMethod.GET)
 	@ResponseBody
-	public Object ajaxlist(Page page) {
+	public Object ajaxlist() {
 		//logBefore(logger, Jurisdiction.getUsername()+"列表Banner");
 		//if(!Jurisdiction.buttonJurisdiction(menuUrl, "cha")){return null;} //校验权限(无权查看时页面会有提示,如果不注释掉这句代码就无法进入列表页面,所以根据情况是否加入本句代码)
 		ModelAndView mv = this.getModelAndView();

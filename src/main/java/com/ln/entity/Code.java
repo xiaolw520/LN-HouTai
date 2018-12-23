@@ -4,7 +4,8 @@ public enum  Code {
 
     Success(1,"请求成功"),
     Fail(-1, "请求出错"),
-    NoData(-2, "没有数据");
+    NoData(-2, "没有数据"),
+    XCXFail(-3,"认证失败");
 
     Code(int code,String msg){
         this.code = code;

@@ -546,6 +546,11 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/json-1.5-20090211.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.57</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>LN-HouTai</finalName>

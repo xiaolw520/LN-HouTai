@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="DeptInfoMapper">
+<mapper namespace="EnrollMapper">
 	
 	<!--表名 -->
 	<sql id="tableName">
-		t_deptinfo
+		t_enroll
 	</sql>
 	
 	<!-- 字段 -->
 	<sql id="Field">
 		refid,	
 		reftype,	
-		info,	
+		real_name,	
+		phone,	
 		crtime,	
 		uptime,	
 		isdel,	
-		state,	
-		sort,
-		imgUrl,
-		deptinfoid
+		state,
+		address,
+		deptid,	
+		dept_name,	
+		professionid,	
+		profession_name,	
+		audit_state,	
+		audit_info,	
+		enrollid
 	</sql>
 	
 	<!-- 字段值 -->
 	<sql id="FieldValue">
 		#{refid},	
 		#{reftype},	
-		#{info},	
+		#{real_name},	
+		#{phone},	
 		#{crtime},	
 		#{uptime},	
 		#{isdel},	
-		#{state},	
-		#{sort},
-		#{imgUrl},
-		#{deptinfoid}
+		#{state},
+		#{address},
+		#{deptid},	
+		#{dept_name},	
+		#{professionid},	
+		#{profession_name},	
+		#{audit_state},	
+		#{audit_info},	
+		#{enrollid}
 	</sql>
 	
 	<!-- 新增-->
@@ -51,21 +63,45 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			deptinfoid = #{deptinfoid}
+			enrollid = #{enrollid}
 	</delete>
 	
-	<!-- 修改 -->
-	<update id="edit" parameterType="pd">
+	<!-- 修改审核信息 -->
+	<update id="editAuditState" parameterType="pd">
 		update
 		<include refid="tableName"></include>
 		set 
-
-			info = #{info},
+			audit_state = #{audit_state},
 			uptime = #{uptime},
-			sort = #{sort},
-			imgUrl = #{imgUrl}
+			audit_info = #{audit_info}
+		where 
+		enrollid = #{enrollid}
+	</update>
+
+	<!-- 修改审核信息 -->
+	<update id="edit" parameterType="pd">
+		update
+		<include refid="tableName"></include>
+		set
+		<if test="audit_state!= null and audit_state != ''">
+			audit_state = #{audit_state},
+		</if>
+		<if test="audit_info!= null and audit_info != ''">
+			audit_info = #{audit_info},
+		</if>
+		<if test="refid!= null and refid != ''">
+			refid = #{refid},
+		</if>
+		real_name = #{real_name},
+		phone = #{phone},
+		address = #{ address},
+		deptid = #{deptid},
+		dept_name = #{dept_name},
+		professionid = #{professionid},
+		profession_name = #{profession_name},
+		uptime = #{uptime}
 		where
-		deptinfoid = #{deptinfoid}
+		enrollid = #{enrollid}
 	</update>
 	
 	<!-- 通过ID获取数据 -->
@@ -75,37 +111,36 @@
 		from 
 		<include refid="tableName"></include>
 		where 
-			deptinfoid = #{deptinfoid}
+			enrollid = #{enrollid}
 	</select>
 
+	<!-- 通过ID获取数据 -->
+	<select id="findByRefid" parameterType="pd" resultType="pd">
+		select
+		<include refid="Field"></include>
+		from
+		<include refid="tableName"></include>
+		where
+			refid = #{refid}
+	</select>
+	
+	<!-- 列表 -->
 	<select id="datalistPage" parameterType="page" resultType="pd">
 		select
-		p.deptinfoid,
-		p.refid,
-		p.reftype,
-		p.info,
-		p.crtime,
-		p.uptime,
-		p.isdel,
-		p.state,
-		p.sort,
-		p.imgUrl,
-		d.name as d_name
-		from
-		<include refid="tableName"></include> p left join t_dept d on p.refid = d.deptid
+		<include refid="Field"></include>
+		from 
+		<include refid="tableName"></include>
 		where 1=1
 		<if test="pd.keywords!= null and pd.keywords != ''"><!-- 关键词检索 -->
 			and
-			(
-			<!--	根据需求自己加检索条件
-                字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-                 or
-                字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
-            -->
-			)
+				(
+				<!--	根据需求自己加检索条件
+					字段1 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%')
+					 or 
+					字段2 LIKE CONCAT(CONCAT('%', #{pd.keywords}),'%') 
+				-->
+				)
 		</if>
-
-
 	</select>
 	
 	<!-- 列表(全部) -->
@@ -114,7 +149,6 @@
 		<include refid="Field"></include>
 		from 
 		<include refid="tableName"></include>
-		where refid=#{deptid} order by sort
 	</select>
 	
 	<!-- 批量删除 -->
@@ -122,7 +156,7 @@
 		delete from
 		<include refid="tableName"></include>
 		where 
-			deptinfoid in
+			enrollid in
 		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
                  #{item}
 		</foreach>
@@ -134,7 +168,7 @@
         set
         isdel = 1
         where
-	deptinfoid = #{deptinfoid}
+	enrollid = #{enrollid}
     </update>
     <!-- 批量软删除 -->
     <delete id="softDeleteAll" parameterType="String">
@@ -143,7 +177,7 @@
         set
         isdel = 1
         where
-	deptinfoid in
+	enrollid in
         <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
 		#{item}
         </foreach>
