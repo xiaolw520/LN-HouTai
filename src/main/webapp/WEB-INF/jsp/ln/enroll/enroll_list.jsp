@@ -69,19 +69,16 @@
 									<th class="center" style="width:50px;">序号</th>
 									<th class="center">姓名</th>
 									<th class="center">手机号</th>
-									<th class="center">创建时间</th>
-									<th class="center">更新时间</th>
-									<th class="center">软删除</th>
-									<th class="center">状态</th>
 									<th class="center">地址</th>
 									<th class="center">学院名称</th>
 									<th class="center">专业名称</th>
 									<th class="center">审核状态</th>
 									<th class="center">审核信息</th>
+									<th class="center">创建时间</th>
+									<th class="center">更新时间</th>
 									<th class="center">操作</th>
 								</tr>
 							</thead>
-													
 							<tbody>
 							<!-- 开始循环 -->	
 							<c:choose>
@@ -95,30 +92,33 @@
 											<td class='center' style="width: 30px;">${vs.index+1}</td>
 											<td class='center'>${var.real_name}</td>
 											<td class='center'>${var.phone}</td>
-											<td class='center'>${var.crtime}</td>
-											<td class='center'>${var.uptime}</td>
-											<td class='center'>${var.isdel}</td>
-											<td class='center'>${var.state}</td>
 											<td class='center'>${var.address}</td>
 											<td class='center'>${var.dept_name}</td>
 											<td class='center'>${var.profession_name}</td>
-											<td class='center'>${var.audit_state}</td>
+											<td class='center'>
+												<c:if test="${var.audit_state==0}"><span class="label label-important arrowed-in">审核中</span></c:if>
+												<c:if test="${var.audit_state==1}"><span class="label label-success arrowed">审核通过</span></c:if>
+												<c:if test="${var.audit_state==2}"><span class="label label-success arrowed">审核不通过</span></c:if>
+											</td>
+											</td>
 											<td class='center'>${var.audit_info}</td>
+											<td class='center'><fmt:formatDate value="${var.crtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+											<td class='center'><fmt:formatDate value="${var.uptime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 											<td class="center">
 												<c:if test="${QX.edit != 1 && QX.del != 1 }">
 												<span class="label label-large label-grey arrowed-in-right arrowed-in"><i class="ace-icon fa fa-lock" title="无权限"></i></span>
 												</c:if>
 												<div class="hidden-sm hidden-xs btn-group">
 													<c:if test="${QX.edit == 1 }">
-													<a class="btn btn-xs btn-success" title="编辑" onclick="edit('${var.enrollid}');">
-														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="编辑"></i>
+													<a class="btn btn-xs btn-success" title="审核" onclick="edit('${var.enrollid}');">
+														<i class="ace-icon fa fa-pencil-square-o bigger-120" title="审核"></i>
 													</a>
 													</c:if>
-													<c:if test="${QX.del == 1 }">
+													<%--<c:if test="${QX.del == 1 }">
 													<a class="btn btn-xs btn-danger" onclick="del('${var.enrollid}');">
 														<i class="ace-icon fa fa-trash-o bigger-120" title="删除"></i>
 													</a>
-													</c:if>
+													</c:if>--%>
 												</div>
 												<div class="hidden-md hidden-lg">
 													<div class="inline pos-rel">
@@ -129,7 +129,7 @@
 														<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 															<c:if test="${QX.edit == 1 }">
 															<li>
-																<a style="cursor:pointer;" onclick="edit('${var.enrollid}');" class="tooltip-success" data-rel="tooltip" title="修改">
+																<a style="cursor:pointer;" onclick="edit('${var.enrollid}');" class="tooltip-success" data-rel="tooltip" title="审核">
 																	<span class="green">
 																		<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																	</span>
@@ -137,13 +137,13 @@
 															</li>
 															</c:if>
 															<c:if test="${QX.del == 1 }">
-															<li>
+															<%--<li>
 																<a style="cursor:pointer;" onclick="del('${var.enrollid}');" class="tooltip-error" data-rel="tooltip" title="删除">
 																	<span class="red">
 																		<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																	</span>
 																</a>
-															</li>
+															</li>--%>
 															</c:if>
 														</ul>
 													</div>
@@ -170,14 +170,14 @@
 						<div class="page-header position-relative">
 						<table style="width:100%;">
 							<tr>
-								<td style="vertical-align:top;">
+								<%--<td style="vertical-align:top;">
 									<c:if test="${QX.add == 1 }">
 									<a class="btn btn-mini btn-success" onclick="add();">新增</a>
 									</c:if>
 									<c:if test="${QX.del == 1 }">
 									<a class="btn btn-mini btn-danger" onclick="makeAll('确定要删除选中的数据吗?');" title="批量删除" ><i class='ace-icon fa fa-trash-o bigger-120'></i></a>
 									</c:if>
-								</td>
+								</td>--%>
 								<td style="vertical-align:top;"><div class="pagination" style="float: right;padding-top: 0px;margin-top: 0px;">${page.pageStr}</div></td>
 							</tr>
 						</table>
@@ -269,44 +269,7 @@
 			});
 		});
 		
-		//新增
-		function add(){
-			 top.jzts();
-			 var diag = new top.Dialog();
-			 diag.Drag=true;
-			 diag.Title ="新增";
-			 diag.URL = '<%=basePath%>enroll/goAdd.do';
-			 diag.Width = 450;
-			 diag.Height = 355;
-			 diag.Modal = true;				//有无遮罩窗口
-			 diag. ShowMaxButton = true;	//最大化按钮
-		     diag.ShowMinButton = true;		//最小化按钮
-			 diag.CancelEvent = function(){ //关闭事件
-				 if(diag.innerFrame.contentWindow.document.getElementById('zhongxin').style.display == 'none'){
-					 if('${page.currentPage}' == '0'){
-						 tosearch();
-					 }else{
-						 tosearch();
-					 }
-				}
-				diag.close();
-			 };
-			 diag.show();
-		}
-		
-		//删除
-		function del(Id){
-			bootbox.confirm("确定要删除吗?", function(result) {
-				if(result) {
-					top.jzts();
-					var url = "<%=basePath%>enroll/delete.do?enrollid="+Id+"&tm="+new Date().getTime();
-					$.get(url,function(data){
-						tosearch();
-					});
-				}
-			});
-		}
-		
+
 		//修改
 		function edit(Id){
 			 top.jzts();
@@ -314,8 +277,8 @@
 			 diag.Drag=true;
 			 diag.Title ="编辑";
 			 diag.URL = '<%=basePath%>enroll/goEdit.do?enrollid='+Id;
-			 diag.Width = 450;
-			 diag.Height = 355;
+             diag.Width = 600;
+             diag.Height = 480;
 			 diag.Modal = true;				//有无遮罩窗口
 			 diag. ShowMaxButton = true;	//最大化按钮
 		     diag.ShowMinButton = true;		//最小化按钮 
@@ -327,52 +290,6 @@
 			 };
 			 diag.show();
 		}
-		
-		//批量操作
-		function makeAll(msg){
-			bootbox.confirm(msg, function(result) {
-				if(result) {
-					var str = '';
-					for(var i=0;i < document.getElementsByName('ids').length;i++){
-					  if(document.getElementsByName('ids')[i].checked){
-					  	if(str=='') str += document.getElementsByName('ids')[i].value;
-					  	else str += ',' + document.getElementsByName('ids')[i].value;
-					  }
-					}
-					if(str==''){
-						bootbox.dialog({
-							message: "<span class='bigger-110'>您没有选择任何内容!</span>",
-							buttons: 			
-							{ "button":{ "label":"确定", "className":"btn-sm btn-success"}}
-						});
-						$("#zcheckbox").tips({
-							side:1,
-				            msg:'点这里全选',
-				            bg:'#AE81FF',
-				            time:8
-				        });
-						return;
-					}else{
-						if(msg == '确定要删除选中的数据吗?'){
-							top.jzts();
-							$.ajax({
-								type: "POST",
-								url: '<%=basePath%>enroll/deleteAll.do?tm='+new Date().getTime(),
-						    	data: {DATA_IDS:str},
-								dataType:'json',
-								//beforeSend: validateData,
-								cache: false,
-								success: function(data){
-									 $.each(data.list, function(i, list){
-											tosearch();
-									 });
-								}
-							});
-						}
-					}
-				}
-			});
-		};
 		
 		//导出excel
 		function toExcel(){

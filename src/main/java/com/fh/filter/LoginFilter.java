@@ -63,7 +63,6 @@ public class LoginFilter extends BaseController implements Filter {
 			return;
 		}
 		PageData pd = new PageData();
-		pd = this.getPageData();
 		pd.put("token",token);
 		Account account = null;
 		try {

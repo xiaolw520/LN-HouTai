@@ -164,25 +164,33 @@ public class EnrollController extends BaseController {
 		PageData pd = new PageData();
 		pd = this.getPageData();
 		Account account = (Account)request.getSession().getAttribute(Const.SESSION_ACCOUNT);
-
+		Map<String,Object> map = new HashMap<String,Object>();
 		pd.put("refid", account.getAccountid());
 
 		Code code = null;
 		try {
 			pd = enrollService.findByRefid(pd);	//根据ID读取
 			if(pd==null){
-				code = Code.Fail;
+				pd = new PageData();
+				code = Code.NoData;
+				map.put("code", code);
+				return AppUtil.returnObject(pd, map);
 			}else{
 				code = Code.Success;
+				map.put("enroll", pd);
+				map.put("code", code);
+				pd.put("crtime",Tools.date2Str((Date)pd.get("crtime"),"yyyy-MM-dd"));
+				pd.put("uptime",Tools.date2Str((Date)pd.get("uptime"),"yyyy-MM-dd"));
+
+				return AppUtil.returnObject(pd, map);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			code = Code.Fail;
+			map.put("code", code);
+			return AppUtil.returnObject(new PageData() , map);
 		}
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("enroll", pd);
-		map.put("code", code);
-		return AppUtil.returnObject(pd, map);
+
 	}
 
 	/**查询当前用户
@@ -204,7 +212,10 @@ public class EnrollController extends BaseController {
 			code = Code.Success;
 		}
 		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("user", account);
+
+		Account accountModel = new Account();
+		accountModel.setAccountid(account.getAccountid());
+		map.put("user", accountModel);
 		map.put("code", code);
 		return AppUtil.returnObject(pd, map);
 	}
@@ -226,8 +237,13 @@ public class EnrollController extends BaseController {
 
 		Account account = (Account)request.getSession().getAttribute(Const.SESSION_ACCOUNT);
 
+
 		Code code = null;
 		try {
+			PageData enroll = enrollService.findByRefid(pd);	//根据ID读取
+			if(enroll !=null){
+				pd.put("enrollid",enroll.get("enrollid").toString());
+			}
 			if(pd.get("enrollid") !=null && StringUtils.isNotEmpty(pd.get("enrollid").toString())){
 				pd.put("refid",account.getAccountid());
 				pd.put("uptime", Tools.date2Str(new Date()));

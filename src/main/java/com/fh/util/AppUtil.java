@@ -111,6 +111,9 @@ public class AppUtil  {
 	 * @return
 	 */
 	public static Object returnObject(PageData pd, Map map){
+		if(pd ==null){
+			pd = new PageData();
+		}
 		if(pd.containsKey("callback")){
 			String callback = pd.get("callback").toString();
 			return new JSONPObject(callback, map);

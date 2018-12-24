@@ -74,9 +74,9 @@
 								<td style="width:75px;text-align: right;padding-top: 13px;">审核状态:</td>
 								<td>
 									<select class="chosen-select form-control" name="audit_state" id="audit_state" data-placeholder="请选择审核状态" style="vertical-align:top;width: 98%;">
-										<option value="0" <c:if test="${var.audit_state==0}">selected = "selected" </c:if>>审核中</option>
-										<option value="1" <c:if test="${var.audit_state==1}">selected = "selected" </c:if>>审核通过</option>
-										<option value="2" <c:if test="${var.audit_state==2}">selected = "selected" </c:if>>审核不通过</option>
+										<option value="0" <c:if test="${pd.audit_state==0}">selected </c:if>>审核中</option>
+										<option value="1" <c:if test="${pd.audit_state==1}">selected </c:if>>审核通过</option>
+										<option value="2" <c:if test="${pd.audit_state==2}">selected </c:if>>审核不通过</option>
 									</select>
 								</td>
 							</tr>
@@ -123,136 +123,7 @@
 		$(top.hangge());
 		//保存
 		function save(){
-			if($("#refid").val()==""){
-				$("#refid").tips({
-					side:3,
-		            msg:'请输入accountid',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#refid").focus();
-			return false;
-			}
-			if($("#reftype").val()==""){
-				$("#reftype").tips({
-					side:3,
-		            msg:'请输入用户',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#reftype").focus();
-			return false;
-			}
-			if($("#real_name").val()==""){
-				$("#real_name").tips({
-					side:3,
-		            msg:'请输入姓名',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#real_name").focus();
-			return false;
-			}
-			if($("#phone").val()==""){
-				$("#phone").tips({
-					side:3,
-		            msg:'请输入手机号',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#phone").focus();
-			return false;
-			}
-			if($("#crtime").val()==""){
-				$("#crtime").tips({
-					side:3,
-		            msg:'请输入创建时间',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#crtime").focus();
-			return false;
-			}
-			if($("#uptime").val()==""){
-				$("#uptime").tips({
-					side:3,
-		            msg:'请输入更新时间',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#uptime").focus();
-			return false;
-			}
-			if($("#isdel").val()==""){
-				$("#isdel").tips({
-					side:3,
-		            msg:'请输入软删除',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#isdel").focus();
-			return false;
-			}
-			if($("# state").val()==""){
-				$("# state").tips({
-					side:3,
-		            msg:'请输入状态',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("# state").focus();
-			return false;
-			}
-			if($("# address").val()==""){
-				$("# address").tips({
-					side:3,
-		            msg:'请输入地址',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("# address").focus();
-			return false;
-			}
-			if($("#deptid").val()==""){
-				$("#deptid").tips({
-					side:3,
-		            msg:'请输入院系id',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#deptid").focus();
-			return false;
-			}
-			if($("#dept_name").val()==""){
-				$("#dept_name").tips({
-					side:3,
-		            msg:'请输入学院名称',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#dept_name").focus();
-			return false;
-			}
-			if($("#professionid").val()==""){
-				$("#professionid").tips({
-					side:3,
-		            msg:'请输入专业id',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#professionid").focus();
-			return false;
-			}
-			if($("#profession_name").val()==""){
-				$("#profession_name").tips({
-					side:3,
-		            msg:'请输入专业名称',
-		            bg:'#AE81FF',
-		            time:2
-		        });
-				$("#profession_name").focus();
-			return false;
-			}
+
 			if($("#audit_state").val()==""){
 				$("#audit_state").tips({
 					side:3,

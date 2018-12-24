@@ -63,9 +63,16 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>loginFilter</filter-name>
-		<url-pattern>/enroll/ajaxEnroll;/enroll/ajaxSubmit;/enroll/ajaxAccount</url-pattern>
+		<url-pattern>/enroll/ajaxEnroll</url-pattern>
 	</filter-mapping>
-
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/enroll/ajaxSubmit</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>loginFilter</filter-name>
+		<url-pattern>/enroll/ajaxAccount</url-pattern>
+	</filter-mapping>
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
